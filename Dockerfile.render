@@ -1,0 +1,31 @@
+# Dockerfile optimized for Render.com deployment
+FROM openjdk:24-jdk-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy gradle wrapper and build files
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle .
+COPY settings.gradle .
+
+# Copy source code
+COPY src src
+
+# Make gradlew executable
+RUN chmod +x ./gradlew
+
+# Build the application (Render will run this as build command)
+RUN ./gradlew bootJar --no-daemon
+
+# Create non-root user for security
+RUN groupadd -r cats && useradd -r -g cats cats
+RUN chown -R cats:cats /app
+USER cats
+
+# Expose port (Render will override with PORT env var)
+EXPOSE 8080
+
+# Run the application (Render will override with start command)
+CMD ["java", "-Dserver.port=${PORT:-8080}", "-jar", "build/libs/cats-0.0.1-SNAPSHOT.jar"]

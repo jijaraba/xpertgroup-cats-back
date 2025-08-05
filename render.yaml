@@ -1,0 +1,25 @@
+databases:
+  - name: cats-postgres
+    databaseName: cats_db
+    user: cats_user
+    region: oregon
+
+services:
+  - type: web
+    name: cats-api
+    env: java
+    region: oregon
+    plan: free
+    buildCommand: ./gradlew bootJar --no-daemon
+    startCommand: java -Dserver.port=$PORT -jar build/libs/cats-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cats-postgres
+          property: connectionString
+      - key: SPRING_PROFILES_ACTIVE
+        value: production
+      - key: CATS_API_BASE_URL
+        value: https://api.thecatapi.com/v1
+      - key: CATS_API_KEY
+        sync: false # Set manually in Render dashboard for security

@@ -84,6 +84,19 @@ docker-compose up --build
 docker-compose -f docker-compose.postgres.yml up --build
 ```
 
+### Cloud Deployment
+
+**Deploy to Render.com:**
+
+See [RENDER.md](RENDER.md) for complete Render deployment instructions.
+
+**Quick deploy to Render:**
+1. Push code to GitHub
+2. Create Render account and connect repository
+3. Render auto-detects `render.yaml` and deploys
+4. Add your `CATS_API_KEY` in environment variables
+5. Access your API at `https://your-app.onrender.com`
+
 ## 🧪 Testing
 
 Run the comprehensive test suite:
