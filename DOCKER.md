@@ -4,6 +4,17 @@ This project includes Docker configurations for easy deployment and development.
 
 ## Quick Start
 
+### Prerequisites
+
+1. **Set up environment variables:**
+   ```bash
+   # Copy the example file
+   cp .env.example .env
+   
+   # Edit .env with your API key
+   # Get your free API key from https://thecatapi.com/
+   ```
+
 ### Option 1: Using H2 Database (Simple Setup)
 
 Run the application with in-memory H2 database:
@@ -71,10 +82,13 @@ docker-compose -f docker-compose.postgres.yml down -v
 
 ## Environment Variables
 
-The application uses these environment variables in Docker:
+The application uses environment variables defined in the `.env` file:
 
-- `CATS_API_BASE_URL`: Base URL for TheCatAPI (default: https://api.thecatapi.com/v1)
-- `CATS_API_KEY`: API key for TheCatAPI
+**Required in .env file:**
+- `CATS_API_BASE_URL`: Base URL for TheCatAPI (https://api.thecatapi.com/v1)
+- `CATS_API_KEY`: Your API key from TheCatAPI (get free key at https://thecatapi.com/)
+
+**Automatic in Docker:**
 - `SPRING_PROFILES_ACTIVE`: Spring profile (set to 'docker')
 
 For PostgreSQL setup, additional variables:

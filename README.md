@@ -56,7 +56,13 @@ Built following **Clean Architecture** and **SOLID** principles:
    cd xpertgroup_cats
    ```
 
-2. **Run the application**
+2. **Set up environment variables (for Docker)**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your TheCatAPI key from https://thecatapi.com/
+   ```
+
+3. **Run the application**
    ```bash
    ./gradlew bootRun
    ```
@@ -139,8 +145,16 @@ spring.datasource.password=password
 
 ### Environment Variables
 
-For Docker deployment:
-- `CATS_API_KEY` - TheCatAPI key
+**Create a `.env` file for Docker deployment:**
+```bash
+cp .env.example .env
+```
+
+**Required variables in `.env`:**
+- `CATS_API_KEY` - TheCatAPI key (get free at https://thecatapi.com/)
+- `CATS_API_BASE_URL` - API base URL (https://api.thecatapi.com/v1)
+
+**Additional PostgreSQL variables (handled automatically):**
 - `SPRING_DATASOURCE_URL` - Database connection
 - `SPRING_DATASOURCE_USERNAME` - Database username
 - `SPRING_DATASOURCE_PASSWORD` - Database password
