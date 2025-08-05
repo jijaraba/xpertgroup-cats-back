@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: catsdb
+      POSTGRES_USER: cats_user
+      POSTGRES_PASSWORD: cats_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cats-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cats_user -d catsdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cats-app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/catsdb
+      - SPRING_DATASOURCE_USERNAME=cats_user
+      - SPRING_DATASOURCE_PASSWORD=cats_password
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - CATS_API_BASE_URL=https://api.thecatapi.com/v1
+      - CATS_API_KEY=live_JBT0Ah0Nt12iyl2IpjQVLDWjcLk0GQwf4zI9wBMfmfejKmcC31mOJp4yJz5TsOUP
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - cats-network
+
+volumes:
+  postgres_data:
+
+networks:
+  cats-network:
+    driver: bridge

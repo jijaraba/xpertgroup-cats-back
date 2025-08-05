@@ -1,0 +1,15 @@
+services:
+  cats-app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CATS_API_BASE_URL=https://api.thecatapi.com/v1
+      - CATS_API_KEY=live_JBT0Ah0Nt12iyl2IpjQVLDWjcLk0GQwf4zI9wBMfmfejKmcC31mOJp4yJz5TsOUP
+    networks:
+      - cats-network
+
+networks:
+  cats-network:
+    driver: bridge
